@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Carta Navideña Mágica</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Great+Vibes&family=Mountains+of+Christmas:wght@700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+    --blanco: #ffffff;
+    --gris-claro: #f5f5f5;
+    --verde-muy-oscuro: #0a1f1a; 
+    --verde-navideno: #14362d; 
+    --rojo: #b93a2c;
+    --rojo-oscuro: #8b2a20;
+    --dorado: #d4af37;
+    --crema: #ffffff;
+}
+
+body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family: 'Bubblegum Sans', cursive;
+    background: radial-gradient(circle at center, var(--verde-navideno) 0%, var(--verde-muy-oscuro) 100%);
+    overflow: hidden;
+}
+
+#nieveCanvas{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:1;
+}
+
+#sobre-contenedor {
+    position: relative;
+    z-index: 10;
+    cursor: pointer;
+    perspective: 1000px;
+}
+
+.sobre {
+    width: 380px;
+    height: 260px;
+    background-color: var(--blanco);
+    position: relative;
+    border-radius: 12px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: flotar 4s ease-in-out infinite, brilloSobre 3s ease-in-out infinite;
+}
+
+@keyframes brilloSobre {
+    0%, 100% { box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 15px rgba(255, 255, 255, 0.1); }
+    50% { box-shadow: 0 25px 60px rgba(0,0,0,0.6), 0 0 40px rgba(212, 175, 55, 0.4); }
+}
+
+.sobre-fondo {
+    position: absolute;
+    width: 0; height: 0;
+    border-left: 190px solid transparent;
+    border-right: 190px solid transparent;
+    border-bottom: 140px solid var(--blanco);
+    bottom: 0;
+    z-index: 2;
+}
+
+.solapa-izq {
+    position: absolute;
+    width: 0; height: 0;
+    border-top: 130px solid transparent;
+    border-bottom: 130px solid transparent;
+    border-left: 195px solid #fcfcfc;
+    left: 0;
+    z-index: 3;
+}
+
+.solapa-der {
+    position: absolute;
+    width: 0; height: 0;
+    border-top: 130px solid transparent;
+    border-bottom: 130px solid transparent;
+    border-right: 195px solid #fcfcfc;
+    right: 0;
+    z-index: 3;
+}
+
+.solapa-superior {
+    position: absolute;
+    top: 0;
+    width: 0; height: 0;
+    border-left: 190px solid transparent;
+    border-right: 190px solid transparent;
+    border-top: 150px solid #f2f2f2;
+    z-index: 4;
+}
+
+.sello-lacre {
+    position: absolute;
+    width: 75px;
+    height: 75px;
+    background: radial-gradient(circle at 30% 30%, var(--rojo), var(--rojo-oscuro));
+    border-radius: 50%;
+    z-index: 5;
+    top: 105px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4), inset 0 0 15px rgba(0,0,0,0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sello-lacre::after {
+    content: "❄";
+    color: var(--dorado);
+    font-size: 38px;
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+    animation: latido 2s infinite ease-in-out;
+}
+
+@keyframes flotar{
+    0%,100%{transform:translateY(0) rotate(-0.5deg);}
+    50%{transform:translateY(-15px) rotate(0.5deg);}
+}
+
+@keyframes latido{
+    50% { transform: scale(1.1); }
+}
+
+#carta-wrapper {
+    display: none;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: 20;
+}
+
+.carta {
+    width: min(480px, 90vw);
+    height: 620px;
+    background: var(--crema);
+    margin: 0 auto;
+    padding: 30px;
+    position: relative;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+    border-radius: 4px;
+    border: 12px solid transparent;
+    border-image: repeating-linear-gradient(45deg, var(--rojo), var(--rojo) 20px, #fff 20px, #fff 40px) 15;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.titulo {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(28px, 5vw, 38px);
+    color: var(--rojo);
+    text-align: center;
+    width: 100%;
+    margin-top: 5px;
+    margin-bottom: 0px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.texto {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 16px;
+    color: #2c3e50;
+    line-height: 1.0; 
+    white-space: pre-line;
+    text-align: center;
+    margin-top: 5px;
+    padding: 0 10px;
+}
+
+.decoracion {
+    position: absolute;
+    width: 115px;
+    background: white;
+    padding: 6px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    border-radius: 5px;
+    z-index: 5;
+}
+
+.foto1 { top: 20px; right: -25px; transform: rotate(10deg); }
+.foto2 { bottom: 20px; left: -25px; transform: rotate(-10deg); }
+
+.instruccion {
+    margin-top: 30px;
+    color: white;
+    text-align: center;
+    font-size: 28px;
+    font-family: 'Bubblegum Sans', cursive;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+}
+
+@media (max-width: 600px) {
+    .decoracion { width: 90px; }
+    .foto1 { right: 5px; top: 15px; }
+    .foto2 { left: 5px; bottom: 15px; }
+    .texto { font-size: 16px; }
+    .titulo { font-size: 30px; }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="nieveCanvas"></canvas>
+
+<div id="sobre-contenedor" onclick="abrirCarta()">
+    <div class="sobre">
+        <div class="solapa-superior"></div>
+        <div class="solapa-izq"></div>
+        <div class="solapa-der"></div>
+        <div class="sobre-fondo"></div>
+        <div class="sello-lacre"></div>
+    </div>
+    <div class="instruccion">Abre la carta >⩊<</div>
+</div>
+
+<div id="carta-wrapper">
+    <div class="carta">
+        <h1 class="titulo">Feliz Navidad Bebé 𖹭</h1>
+
+        <img src="https://i.postimg.cc/N0K2QNT4/Direct-from-Japan-EPOCH-Sylvanian-Families-Baby-Pair-set-Friendly-Christmas-Japan-NEW.jpg"
+             class="decoracion foto1">
+
+        <img src="https://i.postimg.cc/JntKJwgs/𝚢𝚎𝚛𝚒𝚜𝚍𝚒𝚘𝚛.jpg"
+             class="decoracion foto2">
+
+        <div class="texto">
+            Me hace demasiado feliz pasar navidad por segunda vez contigo amor, estos últimos meses han sido un poco difíciles para ambas, pero a pesar de que este mes de diciembre tampoco ha sido el mejor, me alegra tanto el corazón saber que pasare el 24 contigo y no solo eso, si no el 31 también (˶˃ ᵕ ˂˶)
+
+            Pasar estas fechas con vos no me pueden hacer más feliz, no sabes la alegría que sentí al saber que si nos podrás acompañar al viaje, gracias por querer pasar estos días festivos conmigo amor, me hace muy feliz (╥﹏╥)
+
+            Espero este próximo año podamos pasar más días juntas, me duele tanto no poder vernos tanto como antes, pero tengo mucha esperanza que este próximo año sea distinto ㅜㅜ
+
+            Espero te gusten mucho los regalitos que te compre mi bebé, cuando vi cada uno de ellos solo podía pensar en ti cariño, ojalá algún día pueda regalarte el mundo entero que es lo que mereces mi amor ‹𝟹
+
+            Yyy espero también te guste esta cartita, hace muchísimo tiempo quería prepararte algo así y por fin lo pude hacer, la hice con muchoooom amor ♡
+
+            Estoy muy agradecida de haber pasado este año sabiendo que tengo la novia más linda del mundom, espero poder estar con vos todos estos años que vienen y si se puede hasta la eternidad ⸜(｡˃ ᵕ ˂)⸝♡
+
+            Te amo hasta el infinito y más allá mi amorcito bello ♡
+        </div>
+    </div>
+</div>
+
+<script>
+function abrirCarta(){
+    const sobre = document.getElementById("sobre-contenedor");
+    const carta = document.getElementById("carta-wrapper");
+
+    sobre.style.transition = "all 0.8s ease-in";
+    sobre.style.transform = "translateY(-150px) scale(0.5) rotateX(20deg)";
+    sobre.style.opacity = "0";
+
+    setTimeout(() => {
+        sobre.style.display = "none";
+        carta.style.display = "block";
+        setTimeout(() => {
+            carta.style.opacity = "1";
+            carta.style.transform = "translateY(0)";
+        }, 100);
+    }, 800);
+}
+
+const canvas = document.getElementById("nieveCanvas");
+const ctx = canvas.getContext("2d");
+let copos = [];
+
+function resize(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+window.addEventListener("resize", resize);
+resize();
+
+function crearCopos(){
+    copos = []; 
+    for(let i=0; i<140; i++){
+        copos.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            r: Math.random() * 3.5 + 1.5,
+            v: Math.random() * 1.2 + 0.5, 
+            o: Math.random() * 0.8 + 0.2,
+            glow: Math.random() * 10 + 5
+        });
+    }
+}
+
+function animarNieve(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    copos.forEach(c => {
+        ctx.beginPath();
+        ctx.shadowBlur = c.glow;
+        ctx.shadowColor = "rgba(255, 255, 255, 0.8)";
+        ctx.fillStyle = `rgba(255, 255, 255, ${c.o})`;
+        ctx.arc(c.x, c.y, c.r, 0, Math.PI*2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        
+        c.y += c.v;
+        c.x += Math.sin(c.y / 40) * 0.6; 
+
+        if(c.y > canvas.height) {
+            c.y = -20;
+            c.x = Math.random() * canvas.width;
+        }
+    });
+    requestAnimationFrame(animarNieve);
+}
+
+crearCopos();
+animarNieve();
+</script>
+
+</body>
+</html>
